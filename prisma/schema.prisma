@@ -1,0 +1,237 @@
+generator client {
+  provider = "prisma-client-js"
+  previewFeatures = ["jsonProtocol"]
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+enum TeamRole {
+  owner
+  admin
+  member
+}
+
+enum DecisionDepth {
+  quick
+  standard
+  deep
+}
+
+enum DecisionStatus {
+  in_progress
+  locked
+  decided
+}
+
+enum TeamRoundPhase {
+  private_input
+  merge
+  review
+}
+
+enum SessionRole {
+  questioner
+  critic
+  mapper
+}
+
+model User {
+  id         String        @id @default(cuid())
+  email      String        @unique
+  name       String?
+  image      String?
+  teams      TeamMember[]
+  decisions  Decision[]
+  forecasts  Forecast[]
+  sessions   PromptSession[]
+  createdAt  DateTime      @default(now())
+  updatedAt  DateTime      @updatedAt
+}
+
+model Team {
+  id        String        @id @default(cuid())
+  name      String
+  members   TeamMember[]
+  decisions Decision[]
+  createdAt DateTime      @default(now())
+  updatedAt DateTime      @updatedAt
+}
+
+model TeamMember {
+  id        String   @id @default(cuid())
+  teamId    String
+  userId    String
+  role      TeamRole @default(member)
+  team      Team     @relation(fields: [teamId], references: [id], onDelete: Cascade)
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  createdAt DateTime @default(now())
+
+  @@unique([teamId, userId])
+  @@index([userId])
+}
+
+model QuestionPack {
+  id          String   @id @default(cuid())
+  slug        String   @unique
+  name        String
+  category    String
+  description String
+  flow        Json
+  revealRules Json
+  authorId    String?
+  author      User?    @relation(fields: [authorId], references: [id], onDelete: SetNull)
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  decisions Decision[]
+}
+
+model Decision {
+  id            String         @id @default(cuid())
+  title         String
+  problem       String
+  depth         DecisionDepth  @default(standard)
+  packId        String?
+  userId        String
+  teamId        String?
+  status        DecisionStatus @default(in_progress)
+  revealAllowed Boolean        @default(false)
+  createdAt     DateTime       @default(now())
+  updatedAt     DateTime       @updatedAt
+
+  user    User          @relation(fields: [userId], references: [id])
+  team    Team?         @relation(fields: [teamId], references: [id])
+  pack    QuestionPack? @relation(fields: [packId], references: [id])
+  map     DecisionMap?
+  sessions PromptSession[]
+  brief    DecisionBrief?
+  rounds   TeamRound[]
+  forecasts Forecast[]
+  reviews   ReviewReminder[]
+
+  @@index([userId, createdAt])
+  @@index([teamId, createdAt])
+}
+
+model DecisionMap {
+  id          String   @id @default(cuid())
+  decisionId  String   @unique
+  assumptions Json
+  options     Json
+  evidence    Json
+  risks       Json
+  criteria    Json
+  biasFlags   Json
+  decision    Decision @relation(fields: [decisionId], references: [id], onDelete: Cascade)
+}
+
+model PromptSession {
+  id          String      @id @default(cuid())
+  decisionId  String
+  userId      String
+  role        SessionRole
+  transcript  Json
+  createdAt   DateTime    @default(now())
+
+  decision Decision @relation(fields: [decisionId], references: [id], onDelete: Cascade)
+  user     User     @relation(fields: [userId], references: [id])
+
+  @@unique([decisionId, userId])
+  @@index([decisionId, createdAt])
+}
+
+model DecisionBrief {
+  id         String   @id @default(cuid())
+  decisionId String   @unique
+  markdown   String
+  pdfUrl     String?
+  createdAt  DateTime @default(now())
+
+  decision Decision @relation(fields: [decisionId], references: [id], onDelete: Cascade)
+}
+
+model TeamRound {
+  id         String          @id @default(cuid())
+  decisionId String
+  phase      TeamRoundPhase
+  entries    Json
+  heatmap    Json?
+  createdAt  DateTime        @default(now())
+
+  decision Decision @relation(fields: [decisionId], references: [id], onDelete: Cascade)
+
+  @@index([decisionId, createdAt])
+}
+
+model Forecast {
+  id          String   @id @default(cuid())
+  decisionId  String
+  userId      String
+  statement   String
+  probability Float
+  dueAt       DateTime
+  outcome     Int?
+  brier       Float?
+  createdAt   DateTime @default(now())
+
+  decision Decision @relation(fields: [decisionId], references: [id], onDelete: Cascade)
+  user     User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@index([decisionId])
+  @@index([userId])
+}
+
+model ReviewReminder {
+  id         String   @id @default(cuid())
+  decisionId String
+  reviewAt   DateTime
+  sent       Boolean  @default(false)
+  createdAt  DateTime @default(now())
+
+  decision Decision @relation(fields: [decisionId], references: [id], onDelete: Cascade)
+
+  @@index([reviewAt])
+}
+
+model Account {
+  id                String  @id @default(cuid())
+  userId            String
+  type              String
+  provider          String
+  providerAccountId String
+  refresh_token     String? @db.Text
+  access_token      String? @db.Text
+  expires_at        Int?
+  token_type        String?
+  scope             String?
+  id_token          String? @db.Text
+  session_state     String?
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@unique([provider, providerAccountId])
+  @@index([userId])
+}
+
+model Session {
+  id           String   @id @default(cuid())
+  sessionToken String   @unique
+  userId       String
+  expires      DateTime
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@index([userId])
+}
+
+model VerificationToken {
+  identifier String
+  token      String   @unique
+  expires    DateTime
+
+  @@unique([identifier, token])
+}
