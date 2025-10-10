@@ -10,31 +10,33 @@ export default async function PacksPage() {
   });
 
   return (
-    <div className="space-y-6">
-      <div className="flex flex-wrap items-center justify-between gap-3">
+    <div className="space-y-8">
+      <div className="flex flex-wrap items-center justify-between gap-4">
         <div>
-          <h1 className="text-2xl font-semibold text-slate-900">Question Packs</h1>
-          <p className="text-sm text-slate-600">Curated Socratic flows tailored to specific decision types.</p>
+          <h1 className="text-3xl font-semibold tracking-tight text-white">Question Packs</h1>
+          <p className="text-sm text-white/65">Curated Socratic flows tailored to specific decision types.</p>
         </div>
-        <Button asChild>
+        <Button asChild size="lg" className="rounded-full px-6">
           <Link href="/app/packs/new">Create Custom Pack</Link>
         </Button>
       </div>
 
-      <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
+      <div className="grid gap-5 md:grid-cols-2 lg:grid-cols-3">
         {packs.map((pack) => (
-          <Card key={pack.id} className="transition hover:shadow">
+          <Card key={pack.id} className="border-white/10 bg-white/5 transition-transform hover:-translate-y-1">
             <CardHeader>
-              <CardTitle className="text-lg font-semibold">
-                <Link href={`/app/packs/${pack.slug}`} className="hover:underline">
+              <CardTitle className="text-lg font-semibold text-white">
+                <Link href={`/app/packs/${pack.slug}`} className="transition hover:text-primary">
                   {pack.name}
                 </Link>
               </CardTitle>
-              <CardDescription className="text-xs uppercase text-slate-500">{pack.category}</CardDescription>
+              <CardDescription className="text-xs uppercase tracking-[0.3em] text-white/50">
+                {pack.category}
+              </CardDescription>
             </CardHeader>
-            <CardContent className="text-sm text-slate-600">
-              <p className="line-clamp-4">{pack.description}</p>
-              <p className="mt-3 text-xs text-slate-500">{pack.flow.length} questions · Reveal rules enforced</p>
+            <CardContent className="space-y-3 text-sm text-white/70">
+              <p className="line-clamp-4 text-pretty">{pack.description}</p>
+              <p className="text-xs text-white/50">{pack.flow.length} questions · Reveal rules enforced</p>
             </CardContent>
           </Card>
         ))}

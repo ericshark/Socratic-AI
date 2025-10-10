@@ -5,30 +5,34 @@ import { SettingsPreferences } from "@/components/settings/preferences";
 
 export default function SettingsPage() {
   return (
-    <div className="space-y-6">
+    <div className="space-y-8">
       <div>
-        <h1 className="text-2xl font-semibold text-slate-900">Settings</h1>
-        <p className="text-sm text-slate-600">Configure guardrails, integrations, and feature flags.</p>
+        <h1 className="text-3xl font-semibold tracking-tight text-white">Settings</h1>
+        <p className="text-sm text-white/65">Configure guardrails, integrations, and feature flags.</p>
       </div>
 
-      <Card>
+      <Card className="border-white/10 bg-white/5">
         <CardHeader>
-          <CardTitle>Defaults</CardTitle>
-          <CardDescription>Answer-delay, depth preferences, and voice capture flag.</CardDescription>
+          <CardTitle className="text-lg font-semibold text-white">Defaults</CardTitle>
+          <CardDescription className="text-sm text-white/70">
+            Answer-delay, depth preferences, and voice capture flag.
+          </CardDescription>
         </CardHeader>
         <CardContent>
-          <Suspense fallback={<p className="text-sm text-slate-500">Loading preferences…</p>}>
+          <Suspense fallback={<p className="text-sm text-white/60">Loading preferences…</p>}>
             <SettingsPreferences />
           </Suspense>
         </CardContent>
       </Card>
 
-      <Card>
+      <Card className="border-white/10 bg-white/5">
         <CardHeader>
-          <CardTitle>Integrations</CardTitle>
-          <CardDescription>OpenAI, Notion, Slack, Calendar — placeholders until you add env vars.</CardDescription>
+          <CardTitle className="text-lg font-semibold text-white">Integrations</CardTitle>
+          <CardDescription className="text-sm text-white/70">
+            OpenAI, Notion, Slack, Calendar — placeholders until you add env vars.
+          </CardDescription>
         </CardHeader>
-        <CardContent className="space-y-2 text-sm text-slate-600">
+        <CardContent className="space-y-3 text-sm text-white/70">
           <IntegrationStatus
             envKey="OPENAI_API_KEY"
             label="OpenAI"
@@ -66,12 +70,16 @@ function IntegrationStatus({
 }) {
   const enabled = Boolean(process.env[envKey]);
   return (
-    <div className="flex items-center justify-between rounded-md border border-slate-200 bg-slate-50 p-3">
+    <div className="flex items-center justify-between rounded-2xl border border-white/10 bg-white/5 p-4">
       <div>
-        <p className="font-medium text-slate-900">{label}</p>
-        <p className="text-xs text-slate-500">{description}</p>
+        <p className="font-medium text-white">{label}</p>
+        <p className="text-xs text-white/55">{description}</p>
       </div>
-      <span className={`text-xs font-semibold ${enabled ? "text-emerald-600" : "text-amber-600"}`}>
+      <span
+        className={`rounded-full px-3 py-1 text-xs font-semibold uppercase tracking-[0.3em] ${
+          enabled ? "bg-emerald-400/15 text-emerald-200" : "bg-amber-400/15 text-amber-200"
+        }`}
+      >
         {enabled ? "Configured" : "Missing"}
       </span>
     </div>

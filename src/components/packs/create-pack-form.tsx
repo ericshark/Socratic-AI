@@ -10,9 +10,7 @@ import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
-import { questionPackSchema } from "@core/index";
-
-const flowStepSchema = questionPackSchema.shape.flow.element;
+import { questionPackSchema, type QuestionPackInput } from "@core/index";
 
 type FormValues = {
   slug: string;
@@ -20,7 +18,7 @@ type FormValues = {
   category: string;
   description: string;
   revealRules: Record<string, number>;
-  flow: Array<typeof flowStepSchema._type>;
+  flow: Array<QuestionPackInput["flow"][number]>;
 };
 
 export function CreatePackForm() {
@@ -70,10 +68,10 @@ export function CreatePackForm() {
   }
 
   return (
-    <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-5">
+    <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
       <div className="grid gap-4 md:grid-cols-2">
         <div className="space-y-2">
-          <label className="text-sm font-medium" htmlFor="slug">
+          <label className="text-sm font-medium text-white/80" htmlFor="slug">
             Pack Slug
           </label>
           <Input
@@ -83,11 +81,11 @@ export function CreatePackForm() {
             aria-invalid={Boolean(form.formState.errors.slug)}
           />
           {form.formState.errors.slug && (
-            <p className="text-xs text-rose-500">{form.formState.errors.slug.message}</p>
+            <p className="text-xs text-rose-300">{form.formState.errors.slug.message}</p>
           )}
         </div>
         <div className="space-y-2">
-          <label className="text-sm font-medium" htmlFor="category">
+          <label className="text-sm font-medium text-white/80" htmlFor="category">
             Category
           </label>
           <Input
@@ -100,7 +98,7 @@ export function CreatePackForm() {
       </div>
 
       <div className="space-y-2">
-        <label className="text-sm font-medium" htmlFor="name">
+        <label className="text-sm font-medium text-white/80" htmlFor="name">
           Name
         </label>
         <Input
@@ -112,7 +110,7 @@ export function CreatePackForm() {
       </div>
 
       <div className="space-y-2">
-        <label className="text-sm font-medium" htmlFor="description">
+        <label className="text-sm font-medium text-white/80" htmlFor="description">
           Description
         </label>
         <Textarea
@@ -124,15 +122,15 @@ export function CreatePackForm() {
         />
       </div>
 
-      <Card>
+      <Card className="border-white/10 bg-white/5">
         <CardHeader>
-          <CardTitle className="text-base">Reveal Rules</CardTitle>
-          <CardDescription>Answer-Delay guard uses these thresholds before drafts unlock.</CardDescription>
+          <CardTitle className="text-base text-white">Reveal Rules</CardTitle>
+          <CardDescription className="text-white/70">Answer-Delay guard uses these thresholds before drafts unlock.</CardDescription>
         </CardHeader>
         <CardContent className="grid gap-4 md:grid-cols-3">
           {Object.entries(form.watch("revealRules")).map(([key, value]) => (
             <div key={key} className="space-y-1">
-              <label className="text-xs uppercase text-slate-500" htmlFor={key}>
+              <label className="text-xs uppercase tracking-[0.3em] text-white/50" htmlFor={key}>
                 {key}
               </label>
               <Input
@@ -141,27 +139,28 @@ export function CreatePackForm() {
                 min={0}
                 value={value}
                 onChange={(event) => form.setValue(`revealRules.${key}` as const, Number(event.target.value))}
+                className="bg-white/10"
               />
             </div>
           ))}
         </CardContent>
       </Card>
 
-      <Card>
+      <Card className="border-white/10 bg-white/5">
         <CardHeader>
-          <CardTitle className="text-base">Question Flow</CardTitle>
-          <CardDescription>Define the Socratic prompts that coach the team.</CardDescription>
+          <CardTitle className="text-base text-white">Question Flow</CardTitle>
+          <CardDescription className="text-white/70">Define the Socratic prompts that coach the team.</CardDescription>
         </CardHeader>
         <CardContent className="space-y-3">
           {flowArray.fields.map((field, index) => (
-            <div key={field.id} className="rounded-lg border border-slate-200 p-3">
-              <div className="flex items-center justify-between text-xs uppercase text-slate-500">
+            <div key={field.id} className="rounded-2xl border border-white/10 bg-white/5 p-4">
+              <div className="flex items-center justify-between text-xs uppercase tracking-[0.3em] text-white/50">
                 <span>Step {index + 1}</span>
                 <Button
                   type="button"
                   variant="ghost"
                   size="sm"
-                  className="text-rose-500"
+                  className="text-rose-300"
                   onClick={() => flowArray.remove(index)}
                   disabled={flowArray.fields.length <= 1}
                 >
@@ -174,7 +173,7 @@ export function CreatePackForm() {
                   {...form.register(`flow.${index}.text` as const)}
                 />
                 <select
-                  className="h-10 rounded-md border border-slate-300 px-3 text-sm"
+                  className="h-11 rounded-xl border border-white/10 bg-white/5 px-3 text-sm text-white focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary/40"
                   {...form.register(`flow.${index}.type` as const)}
                 >
                   <option value="prompt">Prompt</option>
@@ -190,6 +189,7 @@ export function CreatePackForm() {
             onClick={() =>
               flowArray.append({ id: `step-${flowArray.fields.length + 1}`, type: "prompt", text: "" })
             }
+            className="border-white/20"
           >
             Add Question Step
           </Button>

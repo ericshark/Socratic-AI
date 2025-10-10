@@ -1,10 +1,27 @@
-import { getProviders } from "next-auth/react";
 import { redirect } from "next/navigation";
 import Link from "next/link";
 
+import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
-import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
-import { auth, signIn } from "@/server/auth";
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
+import { Input } from "@/components/ui/input";
+import { Separator } from "@/components/ui/separator";
+import { auth, authProviders, signIn } from "@/server/auth";
+
+const highlights = [
+  {
+    title: "Guardrails built-in",
+    description: "Delay answers until assumptions, options, and risks are logged.",
+  },
+  {
+    title: "Team heatmaps",
+    description: "Visualize alignment and tension points before you commit.",
+  },
+  {
+    title: "Decision briefs",
+    description: "Export polished narratives ready for exec reviews and standups.",
+  },
+];
 
 export default async function SignInPage() {
   const session = await auth();
@@ -12,44 +29,107 @@ export default async function SignInPage() {
     redirect("/app");
   }
 
-  const providers = await getProviders();
+  const providers = authProviders;
 
-  async function handleProviderSignIn(providerId: string) {
+  async function handleProviderSignIn(providerId: string, formData: FormData) {
     "use server";
+    const provider = providers.find((item) => item.id === providerId);
+    if (!provider) {
+      throw new Error("Provider not found");
+    }
+
+    if (provider.type === "email" || provider.type === "credentials") {
+      const email = formData.get("email");
+      if (!email || typeof email !== "string") {
+        throw new Error("Email is required");
+      }
+
+      await signIn(providerId, { redirectTo: "/app", email: email.trim().toLowerCase() });
+      return;
+    }
+
     await signIn(providerId, { redirectTo: "/app" });
   }
 
   return (
-    <div className="flex min-h-screen items-center justify-center bg-gradient-to-br from-slate-950 via-slate-900 to-slate-800 p-6">
-      <Card className="w-full max-w-md border-white/10 bg-slate-900/80 text-white">
-        <CardHeader className="space-y-2 text-center">
-          <CardTitle className="text-2xl font-semibold">Welcome to Socratic</CardTitle>
-          <CardDescription className="text-white/70">
-            Sign in to unlock guided decision flows and team heatmaps.
-          </CardDescription>
-        </CardHeader>
-        <CardContent className="space-y-4">
-          {providers ? (
-            Object.values(providers).map((provider) => (
-              <form key={provider.id} action={handleProviderSignIn.bind(null, provider.id)}>
-                <Button type="submit" className="w-full">
-                  Continue with {provider.name}
-                </Button>
-              </form>
-            ))
-          ) : (
-            <p className="text-sm text-white/70">
-              No providers configured. Add Email or Google credentials in Settings → Integrations.
+    <div className="relative min-h-screen overflow-hidden bg-background text-foreground">
+      <div className="pointer-events-none absolute inset-0 -z-10 bg-hero-grid opacity-70" aria-hidden />
+      <div className="pointer-events-none absolute -left-40 top-20 -z-10 size-96 rounded-full bg-gradient-to-br from-primary/35 via-sky-500/30 to-transparent blur-3xl" aria-hidden />
+      <div className="pointer-events-none absolute -right-24 bottom-0 -z-10 size-96 rounded-full bg-gradient-to-tr from-rose-500/25 via-primary/25 to-transparent blur-3xl" aria-hidden />
+
+      <div className="relative z-10 mx-auto flex min-h-screen w-full max-w-6xl flex-col gap-16 px-6 py-16 lg:flex-row lg:items-center lg:justify-between">
+        <section className="max-w-xl space-y-8">
+          <Badge>Beta Access</Badge>
+          <div className="space-y-5">
+            <h1 className="text-balance text-4xl font-semibold leading-tight tracking-tight md:text-5xl">
+              Intentional decisions start with better questions.
+            </h1>
+            <p className="text-lg text-white/70">
+              Join Socratic to coach your team’s reasoning with structured question packs, answer-delay rituals, and shareable decision briefs.
             </p>
-          )}
-        </CardContent>
-        <CardFooter className="flex flex-col gap-2 text-xs text-white/60">
-          <p>
-            Need an invite? <Link href="mailto:coach@socratic.local" className="underline">Contact Socratic</Link>
-          </p>
-          <p>Magic links require EMAIL_SERVER_* env values (placeholder).</p>
-        </CardFooter>
-      </Card>
+          </div>
+          <div className="grid gap-5 md:grid-cols-3">
+            {highlights.map((item) => (
+              <div key={item.title} className="rounded-2xl border border-white/10 bg-white/5 p-4 backdrop-blur-xl">
+                <p className="text-sm font-semibold text-white/80">{item.title}</p>
+                <p className="mt-2 text-xs text-white/60">{item.description}</p>
+              </div>
+            ))}
+          </div>
+        </section>
+
+        <Card className="w-full max-w-lg border-white/15 bg-card/80">
+          <CardHeader className="space-y-4 p-8 pb-4 text-left">
+            <CardTitle className="text-2xl font-semibold text-white">Sign in to Socratic</CardTitle>
+            <CardDescription className="text-base text-white/65">
+              Choose your workspace provider. We’ll guide you straight into your open decisions.
+            </CardDescription>
+          </CardHeader>
+          <CardContent className="space-y-6 p-8 pt-4">
+            {providers.length > 0 ? (
+              providers.map((provider) => (
+                <div key={provider.id} className="space-y-2">
+                  <form action={handleProviderSignIn.bind(null, provider.id)} className="space-y-3">
+                    {provider.type === "email" || provider.type === "credentials" ? (
+                      <div className="space-y-2">
+                        <label className="text-xs font-semibold uppercase tracking-[0.3em] text-white/50" htmlFor={`email-${provider.id}`}>
+                          Work email
+                        </label>
+                        <Input
+                          id={`email-${provider.id}`}
+                          name="email"
+                          type="email"
+                          placeholder="you@team.com"
+                          required
+                          className="bg-white/10 text-white placeholder:text-white/50"
+                        />
+                      </div>
+                    ) : null}
+                    {provider.defaults?.email ? (
+                      <input type="hidden" name="email" value={provider.defaults.email} />
+                    ) : null}
+                    <Button type="submit" size="lg" className="w-full">
+                      Continue with {provider.name}
+                    </Button>
+                  </form>
+                </div>
+              ))
+            ) : (
+              <p className="text-sm text-white/70">
+                No providers configured. Add authentication credentials in Settings → Integrations.
+              </p>
+            )}
+
+            <Separator className="opacity-70" />
+            <div className="text-xs text-white/60">
+              Need an invite? {" "}
+              <Link href="mailto:coach@socratic.local" className="font-semibold text-white hover:text-white">
+                Contact the Socratic team
+              </Link>
+            </div>
+          </CardContent>
+        </Card>
+      </div>
     </div>
   );
 }

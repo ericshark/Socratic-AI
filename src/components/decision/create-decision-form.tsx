@@ -78,9 +78,9 @@ export function CreateDecisionForm({ packs, teams, defaultDepth = "standard" }: 
   }
 
   return (
-    <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
+    <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-5">
       <div className="space-y-2">
-        <label className="text-sm font-medium text-slate-700" htmlFor="title">
+        <label className="text-sm font-medium text-white/80" htmlFor="title">
           Decision Title
         </label>
         <Input
@@ -90,12 +90,12 @@ export function CreateDecisionForm({ packs, teams, defaultDepth = "standard" }: 
           aria-invalid={Boolean(form.formState.errors.title)}
         />
         {form.formState.errors.title && (
-          <p className="text-xs text-rose-600">{form.formState.errors.title.message}</p>
+          <p className="text-xs text-rose-300">{form.formState.errors.title.message}</p>
         )}
       </div>
 
       <div className="space-y-2">
-        <label className="text-sm font-medium text-slate-700" htmlFor="problem">
+        <label className="text-sm font-medium text-white/80" htmlFor="problem">
           Problem Context
         </label>
         <Textarea
@@ -105,18 +105,18 @@ export function CreateDecisionForm({ packs, teams, defaultDepth = "standard" }: 
           {...form.register("problem")}
         />
         {form.formState.errors.problem && (
-          <p className="text-xs text-rose-600">{form.formState.errors.problem.message}</p>
+          <p className="text-xs text-rose-300">{form.formState.errors.problem.message}</p>
         )}
       </div>
 
       <div className="grid gap-4 md:grid-cols-2">
         <div className="space-y-2">
-          <label className="text-sm font-medium text-slate-700" htmlFor="pack">
+          <label className="text-sm font-medium text-white/80" htmlFor="pack">
             Question Pack
           </label>
           <select
             id="pack"
-            className="flex h-10 w-full rounded-md border border-slate-300 bg-white px-3 text-sm focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary"
+            className="flex h-11 w-full rounded-xl border border-white/10 bg-white/5 px-4 text-sm text-white focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary/40"
             {...form.register("packSlug")}
           >
             {packs.map((pack) => (
@@ -128,12 +128,12 @@ export function CreateDecisionForm({ packs, teams, defaultDepth = "standard" }: 
           </select>
         </div>
         <div className="space-y-2">
-          <label className="text-sm font-medium text-slate-700" htmlFor="depth">
+          <label className="text-sm font-medium text-white/80" htmlFor="depth">
             Depth
           </label>
           <select
             id="depth"
-            className="flex h-10 w-full rounded-md border border-slate-300 bg-white px-3 text-sm focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary"
+            className="flex h-11 w-full rounded-xl border border-white/10 bg-white/5 px-4 text-sm text-white focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary/40"
             {...form.register("depth")}
           >
             {depthOptions.map((option) => (
@@ -147,12 +147,12 @@ export function CreateDecisionForm({ packs, teams, defaultDepth = "standard" }: 
 
       {teams.length > 0 && (
         <div className="space-y-2">
-          <label className="text-sm font-medium text-slate-700" htmlFor="team">
+          <label className="text-sm font-medium text-white/80" htmlFor="team">
             Team (optional)
           </label>
           <select
             id="team"
-            className="flex h-10 w-full rounded-md border border-slate-300 bg-white px-3 text-sm focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary"
+            className="flex h-11 w-full rounded-xl border border-white/10 bg-white/5 px-4 text-sm text-white focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary/40"
             {...form.register("teamId")}
           >
             <option value="">Personal decision</option>
@@ -165,7 +165,7 @@ export function CreateDecisionForm({ packs, teams, defaultDepth = "standard" }: 
         </div>
       )}
 
-      <div className="flex items-center justify-between text-xs text-slate-500">
+      <div className="flex items-center justify-between text-xs text-white/55">
         <span>Answer-Delay guard is enabled by default. Configure in Settings.</span>
       </div>
 

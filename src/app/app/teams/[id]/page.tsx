@@ -38,64 +38,66 @@ export default async function TeamPage({ params }: TeamPageProps) {
   }
 
   return (
-    <div className="space-y-6">
+    <div className="space-y-8">
       <div>
-        <h1 className="text-2xl font-semibold text-slate-900">{team.name}</h1>
-        <p className="text-sm text-slate-600">Team rounds surface disagreement before the merge step.</p>
+        <h1 className="text-3xl font-semibold tracking-tight text-white">{team.name}</h1>
+        <p className="text-sm text-white/65">Team rounds surface disagreement before the merge step.</p>
       </div>
 
-      <div className="grid gap-4 md:grid-cols-2">
-        <Card>
+      <div className="grid gap-5 md:grid-cols-2">
+        <Card className="border-white/10 bg-white/5">
           <CardHeader>
-            <CardTitle>Members</CardTitle>
-            <CardDescription>Owner, admin, and member roles.</CardDescription>
+            <CardTitle className="text-lg font-semibold text-white">Members</CardTitle>
+            <CardDescription className="text-sm text-white/70">Owner, admin, and member roles.</CardDescription>
           </CardHeader>
-          <CardContent className="space-y-2 text-sm text-slate-600">
+          <CardContent className="space-y-3 text-sm text-white/70">
             {team.members.map((member) => (
-              <div key={member.id} className="rounded-md border border-slate-200 p-2">
-                <p className="font-medium text-slate-900">{member.user.name ?? member.user.email}</p>
-                <p className="text-xs uppercase text-slate-500">{member.role}</p>
+              <div key={member.id} className="rounded-2xl border border-white/10 bg-white/5 p-3">
+                <p className="font-medium text-white">{member.user.name ?? member.user.email}</p>
+                <p className="text-xs uppercase tracking-[0.3em] text-white/45">{member.role}</p>
               </div>
             ))}
           </CardContent>
         </Card>
 
-        <Card>
+        <Card className="border-white/10 bg-white/5">
           <CardHeader>
-            <CardTitle>Recent Decisions</CardTitle>
-            <CardDescription>Last five decisions run by this team.</CardDescription>
+            <CardTitle className="text-lg font-semibold text-white">Recent Decisions</CardTitle>
+            <CardDescription className="text-sm text-white/70">Last five decisions run by this team.</CardDescription>
           </CardHeader>
-          <CardContent className="space-y-2 text-sm text-slate-600">
+          <CardContent className="space-y-3 text-sm text-white/70">
             {team.decisions.map((decision) => (
-              <div key={decision.id} className="rounded-md border border-slate-200 p-2">
-                <p className="font-medium text-slate-900">{decision.title}</p>
-                <p className="text-xs text-slate-500">
+              <div key={decision.id} className="rounded-2xl border border-white/10 bg-white/5 p-3">
+                <p className="font-medium text-white">{decision.title}</p>
+                <p className="text-xs text-white/50">
                   {decision.status} · Updated {decision.updatedAt.toLocaleDateString()}
                 </p>
               </div>
             ))}
-            {team.decisions.length === 0 && <p className="text-xs text-slate-500">No decisions yet.</p>}
+            {team.decisions.length === 0 && (
+              <p className="text-xs text-white/50">No decisions yet.</p>
+            )}
           </CardContent>
         </Card>
       </div>
 
-      <Card>
+      <Card className="border-white/10 bg-white/5">
         <CardHeader>
-          <CardTitle>Rounds & Heatmaps</CardTitle>
-          <CardDescription>Monitor divergence before merge.</CardDescription>
+          <CardTitle className="text-lg font-semibold text-white">Rounds & Heatmaps</CardTitle>
+          <CardDescription className="text-sm text-white/70">Monitor divergence before merge.</CardDescription>
         </CardHeader>
-        <CardContent className="space-y-3 text-sm text-slate-600">
+        <CardContent className="space-y-4 text-sm text-white/70">
           {team.rounds.map((round) => (
-            <div key={round.id} className="rounded-md border border-slate-200 p-3">
-              <p className="font-semibold text-slate-900">
+            <div key={round.id} className="rounded-2xl border border-white/10 bg-white/5 p-4">
+              <p className="font-semibold text-white">
                 {round.phase} · {round.createdAt.toLocaleString()}
               </p>
-              <pre className="mt-2 whitespace-pre-wrap text-xs text-slate-500">
+              <pre className="mt-3 whitespace-pre-wrap rounded-xl bg-black/20 p-3 text-xs text-white/60">
                 {JSON.stringify(round.heatmap ?? {}, null, 2)}
               </pre>
             </div>
           ))}
-          {team.rounds.length === 0 && <p className="text-xs text-slate-500">No rounds yet.</p>}
+          {team.rounds.length === 0 && <p className="text-xs text-white/50">No rounds yet.</p>}
         </CardContent>
       </Card>
     </div>

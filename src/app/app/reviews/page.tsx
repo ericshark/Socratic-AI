@@ -17,25 +17,27 @@ export default async function ReviewsPage() {
   });
 
   return (
-    <div className="space-y-6">
+    <div className="space-y-8">
       <div>
-        <h1 className="text-2xl font-semibold text-slate-900">Review Queue</h1>
-        <p className="text-sm text-slate-600">Follow-through beats decisions that drift. Schedule check-ins here.</p>
+        <h1 className="text-3xl font-semibold tracking-tight text-white">Review Queue</h1>
+        <p className="text-sm text-white/65">Follow-through beats decisions that drift. Schedule check-ins here.</p>
       </div>
 
-      <Card>
+      <Card className="border-white/10 bg-white/5">
         <CardHeader>
-          <CardTitle>Upcoming Reviews</CardTitle>
-          <CardDescription>Export to calendar via Settings → Integrations (placeholder).</CardDescription>
+          <CardTitle className="text-lg font-semibold text-white">Upcoming Reviews</CardTitle>
+          <CardDescription className="text-sm text-white/70">
+            Export to calendar via Settings → Integrations (placeholder).
+          </CardDescription>
         </CardHeader>
-        <CardContent className="space-y-3 text-sm text-slate-600">
+        <CardContent className="space-y-3 text-sm text-white/70">
           {reminders.map((reminder) => (
-            <div key={reminder.id} className="rounded-md border border-slate-200 p-3">
-              <p className="font-medium text-slate-900">{reminder.decision.title}</p>
-              <p className="text-xs text-slate-500">Review on {reminder.reviewAt.toLocaleDateString()}</p>
+            <div key={reminder.id} className="rounded-2xl border border-white/10 bg-white/5 p-3">
+              <p className="font-medium text-white">{reminder.decision.title}</p>
+              <p className="text-xs text-white/50">Review on {reminder.reviewAt.toLocaleDateString()}</p>
             </div>
           ))}
-          {reminders.length === 0 && <p className="text-xs text-slate-500">No reviews scheduled yet.</p>}
+          {reminders.length === 0 && <p className="text-xs text-white/50">No reviews scheduled yet.</p>}
         </CardContent>
       </Card>
     </div>

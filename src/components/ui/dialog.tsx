@@ -17,7 +17,7 @@ const DialogOverlay = forwardRef<
   <DialogPrimitive.Overlay
     ref={ref}
     className={cn(
-      "fixed inset-0 z-40 bg-background/80 backdrop-blur-sm",
+      "fixed inset-0 z-40 bg-black/60 backdrop-blur-2xl",
       className,
     )}
     {...props}
@@ -34,7 +34,7 @@ const DialogContent = forwardRef<
     <DialogPrimitive.Content
       ref={ref}
       className={cn(
-        "fixed left-1/2 top-1/2 z-50 grid w-full max-w-2xl -translate-x-1/2 -translate-y-1/2 gap-4 rounded-xl border border-border bg-background p-6 shadow-xl focus:outline-none",
+        "fixed left-1/2 top-1/2 z-50 grid w-full max-w-2xl -translate-x-1/2 -translate-y-1/2 gap-6 rounded-3xl border border-white/15 bg-card/80 p-8 shadow-[0_35px_120px_-50px_rgba(59,130,246,0.65)] backdrop-blur-2xl focus:outline-none",
         className,
       )}
       {...props}
@@ -43,10 +43,10 @@ const DialogContent = forwardRef<
       <DialogPrimitive.Close
         className={cn(
           buttonVariants({ variant: "ghost", size: "icon" }),
-          "absolute right-2 top-2 h-8 w-8 rounded-full",
+          "absolute right-4 top-4 size-9 rounded-full border border-white/10 bg-white/5",
         )}
       >
-        <X className="h-4 w-4" aria-hidden />
+        <X className="size-4" aria-hidden />
         <span className="sr-only">Close</span>
       </DialogPrimitive.Close>
     </DialogPrimitive.Content>

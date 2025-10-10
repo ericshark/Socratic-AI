@@ -21,19 +21,19 @@ export function SettingsPreferences() {
 
   return (
     <div className="space-y-6">
-      <div className="flex items-center justify-between rounded-md border border-slate-200 bg-slate-50 p-3">
+      <div className="flex items-center justify-between rounded-2xl border border-white/10 bg-white/5 p-4">
         <div>
-          <p className="font-medium text-slate-900">Answer-Delay guard</p>
-          <p className="text-xs text-slate-500">
+          <p className="font-medium text-white">Answer-Delay guard</p>
+          <p className="text-xs text-white/55">
             Prevents reveal until assumptions, alternatives, and risks hit thresholds.
           </p>
         </div>
         <Switch checked={answerDelayEnabled} onCheckedChange={(checked) => toggleAnswerDelay(checked)} />
       </div>
 
-      <div className="rounded-md border border-slate-200 bg-slate-50 p-4">
-        <p className="text-sm font-medium text-slate-900">Default depth</p>
-        <p className="text-xs text-slate-500">Choose the default flow intensity for new decisions.</p>
+      <div className="rounded-2xl border border-white/10 bg-white/5 p-5">
+        <p className="text-sm font-medium text-white">Default depth</p>
+        <p className="text-xs text-white/55">Choose the default flow intensity for new decisions.</p>
         <Tabs defaultValue={defaultDepth} className="mt-3">
           <TabsList>
             {depthOptions.map((option) => (
@@ -44,7 +44,7 @@ export function SettingsPreferences() {
           </TabsList>
           {depthOptions.map((option) => (
             <TabsContent key={option.value} value={option.value}>
-              <p className="text-xs text-slate-500">
+              <p className="text-xs text-white/55">
                 {option.value === "quick"
                   ? "6 core prompts to frame a decision quickly."
                   : option.value === "standard"
@@ -56,10 +56,10 @@ export function SettingsPreferences() {
         </Tabs>
       </div>
 
-      <div className="flex items-center justify-between rounded-md border border-slate-200 bg-slate-50 p-3">
+      <div className="flex items-center justify-between rounded-2xl border border-white/10 bg-white/5 p-4">
         <div>
-          <p className="font-medium text-slate-900">Voice capture (placeholder)</p>
-          <p className="text-xs text-slate-500">
+          <p className="font-medium text-white">Voice capture (placeholder)</p>
+          <p className="text-xs text-white/55">
             Record quick notes in the problem pane. Requires browser permission (feature flagged).
           </p>
         </div>
@@ -74,6 +74,7 @@ export function SettingsPreferences() {
           setDefaultDepth("standard");
           toggleVoiceCapture(false);
         }}
+        className="rounded-full border-white/20 px-5"
       >
         Reset to defaults
       </Button>

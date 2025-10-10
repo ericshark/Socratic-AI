@@ -20,13 +20,15 @@ export default async function NewDecisionPage() {
   ]);
 
   return (
-    <div className="mx-auto w-full max-w-3xl">
-      <Card>
-        <CardHeader>
-          <CardTitle>New Decision</CardTitle>
-          <CardDescription>Kick off a guided flow with answer-delay guard rails.</CardDescription>
+    <div className="mx-auto w-full max-w-3xl space-y-6">
+      <Card className="border-white/15 bg-card/85">
+        <CardHeader className="space-y-3">
+          <CardTitle className="text-2xl text-white">Start a new decision</CardTitle>
+          <CardDescription className="text-sm text-white/70">
+            Kick off a guided flow with answer-delay guardrails and collaborative heatmaps.
+          </CardDescription>
         </CardHeader>
-        <CardContent>
+        <CardContent className="space-y-6">
           <CreateDecisionForm
             packs={packs.map((pack) => ({
               slug: pack.slug,
