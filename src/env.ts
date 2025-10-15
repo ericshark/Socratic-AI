@@ -14,9 +14,6 @@ export const env = createEnv({
     GOOGLE_CLIENT_ID: z.string().optional(),
     GOOGLE_CLIENT_SECRET: z.string().optional(),
     OPENAI_API_KEY: z.string().optional(),
-    NOTION_TOKEN: z.string().optional(),
-    SLACK_BOT_TOKEN: z.string().optional(),
-    NOTION_DATABASE_ID: z.string().optional(),
   },
   client: {
     NEXT_PUBLIC_APP_URL: z.string().url().optional(),
@@ -38,9 +35,6 @@ export const env = createEnv({
     GOOGLE_CLIENT_ID: process.env.GOOGLE_CLIENT_ID,
     GOOGLE_CLIENT_SECRET: process.env.GOOGLE_CLIENT_SECRET,
     OPENAI_API_KEY: process.env.OPENAI_API_KEY,
-    NOTION_TOKEN: process.env.NOTION_TOKEN,
-    SLACK_BOT_TOKEN: process.env.SLACK_BOT_TOKEN,
-    NOTION_DATABASE_ID: process.env.NOTION_DATABASE_ID,
     NEXT_PUBLIC_APP_URL: process.env.NEXT_PUBLIC_APP_URL,
     NEXT_PUBLIC_ENABLE_VOICE_CAPTURE:
       process.env.NEXT_PUBLIC_ENABLE_VOICE_CAPTURE,

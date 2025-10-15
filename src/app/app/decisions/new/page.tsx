@@ -25,7 +25,7 @@ export default async function NewDecisionPage() {
         <CardHeader className="space-y-3">
           <CardTitle className="text-2xl text-white">Start a new decision</CardTitle>
           <CardDescription className="text-sm text-white/70">
-            Kick off a guided flow with answer-delay guardrails and collaborative heatmaps.
+            Give the problem a name, set the context, and invite others to weigh in later.
           </CardDescription>
         </CardHeader>
         <CardContent className="space-y-6">

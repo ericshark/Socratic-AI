@@ -23,9 +23,9 @@ export function SettingsPreferences() {
     <div className="space-y-6">
       <div className="flex items-center justify-between rounded-2xl border border-white/10 bg-white/5 p-4">
         <div>
-          <p className="font-medium text-white">Answer-Delay guard</p>
+          <p className="font-medium text-white">Focus reminders</p>
           <p className="text-xs text-white/55">
-            Prevents reveal until assumptions, alternatives, and risks hit thresholds.
+            Nudge the team to fill assumptions, options, and risks before making the call.
           </p>
         </div>
         <Switch checked={answerDelayEnabled} onCheckedChange={(checked) => toggleAnswerDelay(checked)} />

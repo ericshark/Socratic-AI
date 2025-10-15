@@ -165,12 +165,8 @@ export function CreateDecisionForm({ packs, teams, defaultDepth = "standard" }: 
         </div>
       )}
 
-      <div className="flex items-center justify-between text-xs text-white/55">
-        <span>Answer-Delay guard is enabled by default. Configure in Settings.</span>
-      </div>
-
       <Button type="submit" disabled={isPending || checkingReveal} className="w-full">
-        {checkingReveal ? "Creating decision…" : "Start Socratic Flow"}
+        {checkingReveal ? "Creating decision…" : "Create decision workspace"}
       </Button>
     </form>
   );

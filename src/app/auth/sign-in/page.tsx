@@ -10,16 +10,16 @@ import { auth, authProviders, signIn } from "@/server/auth";
 
 const highlights = [
   {
-    title: "Guardrails built-in",
-    description: "Delay answers until assumptions, options, and risks are logged.",
+    title: "Map the decision",
+    description: "Capture assumptions, options, evidence, and risks in one view.",
   },
   {
-    title: "Team heatmaps",
-    description: "Visualize alignment and tension points before you commit.",
+    title: "Shared workspace",
+    description: "Invite teammates to review and add perspective in real time.",
   },
   {
-    title: "Decision briefs",
-    description: "Export polished narratives ready for exec reviews and standups.",
+    title: "Stay accountable",
+    description: "Schedule follow-ups so every call gets revisited on time.",
   },
 ];
 
@@ -65,7 +65,7 @@ export default async function SignInPage() {
               Intentional decisions start with better questions.
             </h1>
             <p className="text-lg text-white/70">
-              Join Socratic to coach your team’s reasoning with structured question packs, answer-delay rituals, and shareable decision briefs.
+              Join Socratic to capture the thinking behind your calls, highlight the unknowns, and keep momentum between working sessions.
             </p>
           </div>
           <div className="grid gap-5 md:grid-cols-3">
